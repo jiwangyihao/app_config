@@ -25,7 +25,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     - name: List
-      run: ls build/kotlin
+      run: ls build/kotlin/sessions
     - name: Upload Release artifact
       uses: actions/upload-artifact@v3
       with:
