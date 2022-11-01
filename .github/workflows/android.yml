@@ -25,7 +25,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     - name: List
-      run: cd build&ls
+      run: ls build
     - name: Upload Release artifact
       uses: actions/upload-artifact@v3
       with:
