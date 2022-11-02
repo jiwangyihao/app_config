@@ -8,7 +8,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "top.jwyihao.top"
+        applicationId "top.jwyihao.config"
         minSdk 27
         targetSdk 33
         versionCode rootProject.ext.appVersionCode
