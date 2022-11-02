@@ -1,4 +1,4 @@
-package top.jwyihao.top.hook
+package top.jwyihao.config.hook
 
 import com.highcapable.yukihookapi.annotation.xposed.InjectYukiHookWithXposed
 import com.highcapable.yukihookapi.hook.factory.configs
