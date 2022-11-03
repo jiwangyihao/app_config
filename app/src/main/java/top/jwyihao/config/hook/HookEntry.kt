@@ -1,6 +1,7 @@
 package top.jwyihao.config.hook
 
 import android.app.Activity
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.content.Intent
 import android.widget.Button
@@ -41,8 +42,8 @@ class HookEntry : IYukiHookXposedInit {
               beforeHook {
                 // Your code here.
                 var configuration: Configuration? = Configuration(args().first().cast<Configuration?>())
-                configuration.toClass().field{
-                  densityDpi = 320
+                configuration.toClass().field("densityDpi") {
+                  set(configuration,320)
                 }
                 args().first().set(configuration)
               }
