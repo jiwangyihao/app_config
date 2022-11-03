@@ -1,6 +1,7 @@
 package top.jwyihao.config.hook
 
 import android.app.Activity
+import android.content.res.Resources
 import android.content.Intent
 import android.widget.Button
 import android.app.AlertDialog
@@ -29,23 +30,26 @@ class HookEntry : IYukiHookXposedInit {
     override fun onHook() = encase {
         // Your code here.
         loadZygote {
-            ActivityClass.hook { 
-                injectMember { 
-                    method { 
-                        name = "onCreate"
-                        param(BundleClass)
-                        returnType = UnitType
-                    }
-                    afterHook {
-                        // Your code here.
-                        AlertDialog.Builder(instance())
-                                            .setTitle("Hooked")
-                                            .setMessage("I am hook!")
-                                            .setPositiveButton("OK", null)
-                                            .show()
-                    }
-                }
+          AlertDialog.Builder(instance())
+            .setTitle("Hooked")
+            .setMessage("I am hook!")
+            .setPositiveButton("OK", null)
+            .show()
+          ResourcesClass.hook {
+            injectMember {
+              method { 
+                name = "updateConfiguration"
+                param(BundleClass)
+                returnType = UnitType
+              }
+              beforeHook {
+                // Your code here.
+                var configuration: Configuration? = Configuration(args().first().cast<Configuration?>())
+                configuration["densityDpi"] = 320
+                args().first().set(configuration)
+              }
             }
+          }
         }
     }
 }
