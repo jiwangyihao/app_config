@@ -3,13 +3,9 @@ package top.jwyihao.config.hook
 import android.app.Activity
 import android.content.Intent
 import android.widget.Button
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.highcapable.yukihookapi.YukiHookAPI
 import com.highcapable.yukihookapi.annotation.xposed.InjectYukiHookWithXposed
-import com.highcapable.yukihookapi.demo_module.R
-import com.highcapable.yukihookapi.demo_module.data.DataConst
-import com.highcapable.yukihookapi.demo_module.hook.factory.compatStyle
-import com.highcapable.yukihookapi.demo_module.ui.MainActivity
+
 import com.highcapable.yukihookapi.hook.factory.applyModuleTheme
 import com.highcapable.yukihookapi.hook.factory.registerModuleAppActivities
 import com.highcapable.yukihookapi.hook.type.android.ActivityClass
