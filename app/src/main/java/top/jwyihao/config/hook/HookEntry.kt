@@ -12,6 +12,7 @@ import com.highcapable.yukihookapi.hook.factory.configs
 import com.highcapable.yukihookapi.hook.factory.encase
 import com.highcapable.yukihookapi.hook.factory.applyModuleTheme
 import com.highcapable.yukihookapi.hook.factory.registerModuleAppActivities
+import com.highcapable.yukihookapi.hook.factory.toClass
 import com.highcapable.yukihookapi.hook.type.android.ActivityClass
 import com.highcapable.yukihookapi.hook.type.android.ResourcesClass
 import com.highcapable.yukihookapi.hook.type.android.BundleClass
@@ -20,7 +21,6 @@ import com.highcapable.yukihookapi.hook.type.java.StringType
 import com.highcapable.yukihookapi.hook.type.java.UnitType
 import com.highcapable.yukihookapi.hook.xposed.bridge.event.YukiXposedEvent
 import com.highcapable.yukihookapi.hook.xposed.proxy.IYukiHookXposedInit
-import com.highcapable.yukihookapi.hook.param.PackageParam
 
 
 @InjectYukiHookWithXposed
