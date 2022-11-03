@@ -3,6 +3,7 @@ package top.jwyihao.config.hook
 import android.app.Activity
 import android.content.Intent
 import android.widget.Button
+import android.app.AlertDialog
 import com.highcapable.yukihookapi.YukiHookAPI
 import com.highcapable.yukihookapi.annotation.xposed.InjectYukiHookWithXposed
 import com.highcapable.yukihookapi.hook.factory.configs
