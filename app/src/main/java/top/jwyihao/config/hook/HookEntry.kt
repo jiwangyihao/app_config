@@ -30,11 +30,6 @@ class HookEntry : IYukiHookXposedInit {
     override fun onHook() = encase {
         // Your code here.
         loadZygote {
-          AlertDialog.Builder(instance())
-            .setTitle("Hooked")
-            .setMessage("I am hook!")
-            .setPositiveButton("OK", null)
-            .show()
           ResourcesClass.hook {
             injectMember {
               method { 
@@ -45,7 +40,9 @@ class HookEntry : IYukiHookXposedInit {
               beforeHook {
                 // Your code here.
                 var configuration: Configuration? = Configuration(args().first().cast<Configuration?>())
-                configuration["densityDpi"] = 320
+                configuration.toClass().field{
+                  densityDpi = 320
+                }
                 args().first().set(configuration)
               }
             }
