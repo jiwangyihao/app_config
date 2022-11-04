@@ -55,8 +55,8 @@ class HookEntry : IYukiHookXposedInit {
             val dpi: Int = 320
             if (dpi > 0) {
               // Density for this package is overridden, change density
-               DisplayClass.field { name = "mDisplayInfo" }?.get(instance).any()
-                .current()?.field { name = "logicalDensityDpi" }?.set(dpi)
+               DisplayClass.field { name = "mDisplayInfo" }?.get(instance)?.any()
+                ?.current()?.field { name = "logicalDensityDpi" }?.set(dpi)
             }
           }
         }
