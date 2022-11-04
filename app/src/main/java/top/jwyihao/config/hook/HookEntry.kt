@@ -39,7 +39,7 @@ class HookEntry : IYukiHookXposedInit {
 
   override fun onHook() = encase {
     // Your code here.
-    loadZygote {
+    loadApp {
       ResourcesClass.hook {
         injectMember {
           method { 
