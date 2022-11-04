@@ -45,8 +45,7 @@ class HookEntry : IYukiHookXposedInit {
               beforeHook {
                 // Your code here.
                 var configuration: Configuration? = Configuration(args().first().cast<Configuration?>())
-                "android.content.res.Configuration".toClass().field { name = "densityDpi" }
-                  .set(configuration,320)
+                configuration.current().field { name = "densityDpi" }.set(320)
                 args().first().set(configuration)
               }
             }
