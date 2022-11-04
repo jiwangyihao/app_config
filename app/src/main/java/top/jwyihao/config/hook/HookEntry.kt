@@ -40,6 +40,18 @@ class HookEntry : IYukiHookXposedInit {
   override fun onHook() = encase {
     // Your code here.
     loadApp {
+      ActivityClass.hook { 
+        injectMember { 
+          method { 
+            name = "onCreate"
+            param(BundleClass)
+            returnType = UnitType
+          }
+          afterHook {
+            Toast.makeText(appContext, "『应用配置』运行中",Toast.LENGTH_SHORT).show();
+          }
+        }
+      }
       ResourcesClass.hook {
         injectMember {
           method { 
