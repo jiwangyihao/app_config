@@ -44,7 +44,7 @@ class HookEntry : IYukiHookXposedInit {
         injectMember { 
           method { 
             name = "onCreate"
-            param(BundleClass)
+            paramCount = 1
             returnType = UnitType
           }
           afterHook {
