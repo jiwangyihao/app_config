@@ -1,4 +1,4 @@
-package top.jwyihao.config.hook
+package top.jwyihao.appconfig.hook
 
 import android.app.Activity
 import android.content.res.Configuration

@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package top.jwyihao.config.utils.factory
+package top.jwyihao.appconfig.utils.factory
 
 import android.content.Context
 import android.content.res.Configuration

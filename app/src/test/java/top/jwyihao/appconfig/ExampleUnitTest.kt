@@ -1,4 +1,4 @@
-package top.jwyihao.top
+package top.jwyihao.appconfig
 
 import org.junit.Test
 
