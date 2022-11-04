@@ -1,14 +1,15 @@
 package top.jwyihao.appconfig.hook
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.res.Configuration
 import android.content.res.Resources
-import android.util.DisplayMetrics
 import android.content.Intent
-import android.widget.Button
-import android.app.AlertDialog
-import android.widget.Toast
 import android.os.Build
+import android.util.DisplayMetrics
+import android.widget.Button
+import android.widget.Toast
+import android.view.Display
 import com.highcapable.yukihookapi.YukiHookAPI
 import com.highcapable.yukihookapi.annotation.xposed.InjectYukiHookWithXposed
 import com.highcapable.yukihookapi.hook.factory.configs
@@ -22,6 +23,7 @@ import com.highcapable.yukihookapi.hook.type.android.ActivityClass
 import com.highcapable.yukihookapi.hook.type.android.ResourcesClass
 import com.highcapable.yukihookapi.hook.type.android.ConfigurationClass
 import com.highcapable.yukihookapi.hook.type.android.DisplayMetricsClass
+import com.highcapable.yukihookapi.hook.type.android.DisplayClass
 import com.highcapable.yukihookapi.hook.type.java.StringArrayClass
 import com.highcapable.yukihookapi.hook.type.java.StringType
 import com.highcapable.yukihookapi.hook.type.java.UnitType
@@ -40,6 +42,27 @@ class HookEntry : IYukiHookXposedInit {
   override fun onHook() = encase {
     // Your code here.
     loadZygote {
+
+      DisplayClass.hook {
+        injectMember {
+          method {
+            name = "updateDisplayInfoLocked"
+            paramCount = 0
+          }
+          afterHook {
+            Toast.makeText(appContext, "DPI Hooking", Toast.LENGTH_SHORT).show();
+
+            val dpi: Int = 320
+            if (dpi > 0) {
+              // Density for this package is overridden, change density
+              val mDisplayInfo = instanceClass.field { name = "mDisplayInfo" }.get()
+              mDisplayInfo.field { name = "logicalDensityDpi" }?.set(dpi)
+            }
+          }
+        }
+      }
+
+      /*
       ActivityClass.hook {
         injectMember {
           method {
@@ -97,6 +120,7 @@ class HookEntry : IYukiHookXposedInit {
           }
         }
       }
+      */
     }
   }
 }
