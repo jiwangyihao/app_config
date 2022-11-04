@@ -52,6 +52,17 @@ class HookEntry : IYukiHookXposedInit {
           }
         }
       }
+      ResourcesClass.hook { 
+        injectMember { 
+          method { 
+            name = "getConfiguration"
+            paramCount = 0
+          }
+          afterHook {
+            Toast.makeText(appContext, "Resources",Toast.LENGTH_SHORT).show();
+          }
+        }
+      }
       ResourcesClass.hook {
         injectMember {
           method { 
