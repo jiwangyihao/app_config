@@ -18,7 +18,7 @@ import com.highcapable.yukihookapi.hook.factory.field
 import com.highcapable.yukihookapi.hook.factory.current
 import com.highcapable.yukihookapi.hook.type.android.ActivityClass
 import com.highcapable.yukihookapi.hook.type.android.ResourcesClass
-import com.highcapable.yukihookapi.hook.type.android.ObjectsClass
+import com.highcapable.yukihookapi.hook.type.android.ConfigurationClass
 import com.highcapable.yukihookapi.hook.type.java.StringArrayClass
 import com.highcapable.yukihookapi.hook.type.java.StringType
 import com.highcapable.yukihookapi.hook.type.java.UnitType
@@ -41,7 +41,7 @@ class HookEntry : IYukiHookXposedInit {
             injectMember {
               method { 
                 name = "updateConfiguration"
-                param(ObjectsClass)
+                param(ConfigurationClass)
                 returnType = UnitType
               }
               beforeHook {
