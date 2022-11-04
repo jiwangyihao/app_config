@@ -50,7 +50,7 @@ class HookEntry : IYukiHookXposedInit {
             emptyParam()
           }
           afterHook {
-            Toast.makeText(appContext, "DPI Hooking", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(appContext, "DPI Hooking", Toast.LENGTH_SHORT).show();
 
             val dpi: Int = 320
             if (dpi > 0) {
