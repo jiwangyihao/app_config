@@ -42,7 +42,6 @@ class HookEntry : IYukiHookXposedInit {
               method { 
                 name = "updateConfiguration"
                 param(ConfigurationClass)
-                returnType = UnitType
               }
               beforeHook {
                 // Your code here.
