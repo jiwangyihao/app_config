@@ -18,7 +18,7 @@ import com.highcapable.yukihookapi.hook.factory.field
 import com.highcapable.yukihookapi.hook.factory.current
 import com.highcapable.yukihookapi.hook.type.android.ActivityClass
 import com.highcapable.yukihookapi.hook.type.android.ResourcesClass
-import com.highcapable.yukihookapi.hook.type.android.BundleClass
+import com.highcapable.yukihookapi.hook.type.android.ObjectsClass
 import com.highcapable.yukihookapi.hook.type.java.StringArrayClass
 import com.highcapable.yukihookapi.hook.type.java.StringType
 import com.highcapable.yukihookapi.hook.type.java.UnitType
@@ -41,12 +41,12 @@ class HookEntry : IYukiHookXposedInit {
             injectMember {
               method { 
                 name = "updateConfiguration"
-                param(BundleClass)
+                param(ObjectsClass)
                 returnType = UnitType
               }
               beforeHook {
                 // Your code here.
-                Toast.makeText(instance, "『应用配置』运行中",Toast.LENGTH_SHORT).show();
+                Toast.makeText(appContext, "『应用配置』运行中",Toast.LENGTH_SHORT).show();
                 var configuration: Configuration? = Configuration(args().first().cast<Configuration?>())
                 configuration?.current()?.field { name = "densityDpi" }?.set(320)
                 args().first().set(configuration)
