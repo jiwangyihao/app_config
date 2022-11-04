@@ -16,49 +16,49 @@ import top.jwyihao.appconfig.utils.factory.isNotSystemInDarkMode
 
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
-    /**
-     * Get the binding layout object
-     *
-     * 获取绑定布局对象
-     */
-    lateinit var binding: VB
+  /**
+   * Get the binding layout object
+   *
+   * 获取绑定布局对象
+   */
+  lateinit var binding: VB
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = current().generic()?.argument()?.method {
-            name = "inflate"
-            param(LayoutInflaterClass)
-        }?.get()?.invoke<VB>(layoutInflater) ?: error("binding failed")
-        setContentView(binding.root)
-        /**
-         * Hide Activity title bar
-         * 隐藏系统的标题栏
-         */
-        supportActionBar?.hide()
-        /**
-         * Init immersive status bar
-         * 初始化沉浸状态栏
-         */
-        WindowCompat.getInsetsController(window, window.decorView).apply {
-            isAppearanceLightStatusBars = isNotSystemInDarkMode
-            isAppearanceLightNavigationBars = isNotSystemInDarkMode
-        }
-        ResourcesCompat.getColor(resources, R.color.colorThemeBackground, null).also {
-            window?.statusBarColor = it
-            window?.navigationBarColor = it
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) window?.navigationBarDividerColor = it
-        }
-        /**
-         * Init children
-         * 装载子类
-         */
-        onCreate()
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    binding = current().generic()?.argument()?.method {
+      name = "inflate"
+      param(LayoutInflaterClass)
+    }?.get()?.invoke<VB>(layoutInflater) ?: error("binding failed")
+    setContentView(binding.root)
+    /**
+     * Hide Activity title bar
+     * 隐藏系统的标题栏
+     */
+    supportActionBar?.hide()
+    /**
+     * Init immersive status bar
+     * 初始化沉浸状态栏
+     */
+    WindowCompat.getInsetsController(window, window.decorView).apply {
+      isAppearanceLightStatusBars = isNotSystemInDarkMode
+      isAppearanceLightNavigationBars = isNotSystemInDarkMode
     }
-
+    ResourcesCompat.getColor(resources, R.color.colorThemeBackground, null).also {
+      window?.statusBarColor = it
+      window?.navigationBarColor = it
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) window?.navigationBarDividerColor = it
+    }
     /**
-     * Callback [onCreate] method
-     *
-     * 回调 [onCreate] 方法
+     * Init children
+     * 装载子类
      */
-    abstract fun onCreate()
+    onCreate()
+  }
+
+  /**
+   * Callback [onCreate] method
+   *
+   * 回调 [onCreate] 方法
+   */
+  abstract fun onCreate()
 }

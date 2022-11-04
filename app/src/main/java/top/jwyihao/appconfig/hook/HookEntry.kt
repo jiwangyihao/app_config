@@ -34,45 +34,45 @@ import java.lang.reflect.Field
 class HookEntry : IYukiHookXposedInit {
 
   override fun onInit() = configs {
-      // Your code here.
+    // Your code here.
   }
 
   override fun onHook() = encase {
     // Your code here.
-    loadApp {
-      ActivityClass.hook { 
-        injectMember { 
-          method { 
+    loadZygote {
+      ActivityClass.hook {
+        injectMember {
+          method {
             name = "onCreate"
             paramCount = 1
             returnType = UnitType
           }
           afterHook {
-            Toast.makeText(appContext, "『应用配置』运行中",Toast.LENGTH_SHORT).show();
-          }
-        }
-      }
-      ResourcesClass.hook { 
-        injectMember { 
-          method { 
-            name = "getConfiguration"
-            paramCount = 0
-          }
-          afterHook {
-            Toast.makeText(appContext, "Resources",Toast.LENGTH_SHORT).show();
+            Toast.makeText(appContext, "『应用配置』运行中", Toast.LENGTH_SHORT).show();
           }
         }
       }
       ResourcesClass.hook {
         injectMember {
-          method { 
+          method {
+            name = "getConfiguration"
+            paramCount = 0
+          }
+          afterHook {
+            Toast.makeText(appContext, "Resources", Toast.LENGTH_SHORT).show();
+          }
+        }
+      }
+      ResourcesClass.hook {
+        injectMember {
+          method {
             name = "updateConfiguration"
             //param(ConfigurationClass,DisplayMetricsClass)
             paramCount = 2
           }
           beforeHook {
             // Your code here.
-            Toast.makeText(appContext, "『应用配置』运行中",Toast.LENGTH_SHORT).show();
+            Toast.makeText(appContext, "『应用配置』运行中", Toast.LENGTH_SHORT).show();
 
             var configuration: Configuration? = Configuration(args().first().cast<Configuration?>())
             val dpi = 320
@@ -92,7 +92,7 @@ class HookEntry : IYukiHookXposedInit {
                 configuration?.current()?.field { name = "densityDpi" }?.set(dpi)
               }
             }
-            
+
             args().first().set(configuration)
           }
         }
