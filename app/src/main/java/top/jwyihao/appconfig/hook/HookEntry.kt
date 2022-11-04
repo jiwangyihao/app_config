@@ -47,7 +47,7 @@ class HookEntry : IYukiHookXposedInit {
         injectMember {
           method {
             name = "updateDisplayInfoLocked"
-            paramCount = 0
+            emptyParam()
           }
           afterHook {
             Toast.makeText(appContext, "DPI Hooking", Toast.LENGTH_SHORT).show();
@@ -78,8 +78,8 @@ class HookEntry : IYukiHookXposedInit {
       ResourcesClass.hook {
         injectMember {
           method {
-            name = "getConfiguration"
-            paramCount = 0
+      name = "getConfiguration"
+      emptyParam()
           }
           afterHook {
             Toast.makeText(appContext, "Resources", Toast.LENGTH_SHORT).show();
