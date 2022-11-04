@@ -6,6 +6,7 @@ import android.content.res.Resources
 import android.content.Intent
 import android.widget.Button
 import android.app.AlertDialog
+import android.widget.Toast
 import com.highcapable.yukihookapi.YukiHookAPI
 import com.highcapable.yukihookapi.annotation.xposed.InjectYukiHookWithXposed
 import com.highcapable.yukihookapi.hook.factory.configs
@@ -45,6 +46,7 @@ class HookEntry : IYukiHookXposedInit {
               }
               beforeHook {
                 // Your code here.
+                Toast.makeText(instance, "『应用配置』运行中",Toast.LENGTH_SHORT).show();
                 var configuration: Configuration? = Configuration(args().first().cast<Configuration?>())
                 configuration?.current()?.field { name = "densityDpi" }?.set(320)
                 args().first().set(configuration)
