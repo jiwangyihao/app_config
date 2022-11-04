@@ -14,6 +14,7 @@ import com.highcapable.yukihookapi.hook.factory.applyModuleTheme
 import com.highcapable.yukihookapi.hook.factory.registerModuleAppActivities
 import com.highcapable.yukihookapi.hook.factory.toClass
 import com.highcapable.yukihookapi.hook.factory.field
+import com.highcapable.yukihookapi.hook.factory.current
 import com.highcapable.yukihookapi.hook.type.android.ActivityClass
 import com.highcapable.yukihookapi.hook.type.android.ResourcesClass
 import com.highcapable.yukihookapi.hook.type.android.BundleClass
