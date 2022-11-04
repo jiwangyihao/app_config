@@ -55,10 +55,11 @@ class HookEntry : IYukiHookXposedInit {
             val dpi: Int = 320
             if (dpi > 0) {
               // Density for this package is overridden, change density
-               DisplayClass.field { name = "mDisplayInfo" }?.get(instance)?.any()
+              loggerD(msg = "成功 hook 方法")
+              DisplayClass.field { name = "mDisplayInfo" }?.get(instance)?.any()
                 ?.current()?.field { name = "logicalDensityDpi" }?.set(dpi)
+              YukiHookLogger.saveToFile("/sdcard/Android/data/" + packageName + "/appconfig.log")
             }
-          }
         }
       }
 
