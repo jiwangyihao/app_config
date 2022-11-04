@@ -44,7 +44,8 @@ class HookEntry : IYukiHookXposedInit {
         injectMember {
           method { 
             name = "updateConfiguration"
-            param(ConfigurationClass,DisplayMetricsClass)
+            //param(ConfigurationClass,DisplayMetricsClass)
+            paramCount = 2
           }
           beforeHook {
             // Your code here.
