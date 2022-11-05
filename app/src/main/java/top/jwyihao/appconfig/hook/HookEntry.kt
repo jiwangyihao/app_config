@@ -12,6 +12,8 @@ import android.widget.Toast
 import android.view.Display
 import com.highcapable.yukihookapi.YukiHookAPI
 import com.highcapable.yukihookapi.annotation.xposed.InjectYukiHookWithXposed
+import com.highcapable.yukihookapi.hook.log.YukiHookLogger
+import com.highcapable.yukihookapi.hook.log.loggerD
 import com.highcapable.yukihookapi.hook.factory.configs
 import com.highcapable.yukihookapi.hook.factory.encase
 import com.highcapable.yukihookapi.hook.factory.applyModuleTheme
@@ -60,6 +62,7 @@ class HookEntry : IYukiHookXposedInit {
                 ?.current()?.field { name = "logicalDensityDpi" }?.set(dpi)
               YukiHookLogger.saveToFile("/sdcard/Android/data/" + packageName + "/appconfig.log")
             }
+          }
         }
       }
 
