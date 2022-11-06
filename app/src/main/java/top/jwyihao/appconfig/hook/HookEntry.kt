@@ -60,8 +60,9 @@ class HookEntry : IYukiHookXposedInit {
             if (dpi > 0) {
               // Density for this package is overridden, change density
               loggerD(msg = "成功 hook 方法")
-              DisplayClass.field { name = "mDisplayInfo" }?.get(instance)?.any()
-                ?.current()?.field { name = "logicalDensityDpi" }?.set(dpi)
+              field { name = "mDisplayInfo" }.get(instance)?.current()?.field { name = "logicalDensityDpi" }?.set(dpi)
+              //DisplayClass.field { name = "mDisplayInfo" }?.get(instance)?.any()
+              //  ?.current()?.field { name = "logicalDensityDpi" }?.set(dpi)
               YukiHookLogger.saveToFile("/sdcard/Android/data/" + packageName + "/appconfig.log")
             }
           }
@@ -154,7 +155,7 @@ class HookEntry : IYukiHookXposedInit {
           beforeHook {
             loggerD(msg = "ContextWrapper hook")
             YukiHookLogger.saveToFile("/sdcard/Android/data/" + packageName + "/appconfig.log")
-            var context: Context = args().first().cast<Context>();
+            var context: Context? = args().first().cast<Context?>();
             var res: Resources = context.getResources();
             var config: Configuration = Configuration(res.getConfiguration());
             var runningMetrics: DisplayMetrics = res.getDisplayMetrics();
