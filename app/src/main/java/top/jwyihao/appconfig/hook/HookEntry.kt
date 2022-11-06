@@ -5,6 +5,8 @@ import android.app.AlertDialog
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.content.Intent
+import android.content.Context
+import android.content.ContextWrapper
 import android.os.Build
 import android.util.DisplayMetrics
 import android.widget.Button
@@ -45,7 +47,7 @@ class HookEntry : IYukiHookXposedInit {
     // Your code here.
     loadZygote {
 
-      DisplayClass.hook {
+      findClass("android.view.Display").hook {
         injectMember {
           method {
             name = "updateDisplayInfoLocked"
@@ -126,5 +128,55 @@ class HookEntry : IYukiHookXposedInit {
       }
       */
     }
+
+    loadApp {
+      ActivityClass.hook {
+        injectMember {
+          method {
+            name = "onCreate"
+            paramCount = 1
+            returnType = UnitType
+          }
+          afterHook {
+            Toast.makeText(appContext, "『应用配置』运行中", Toast.LENGTH_SHORT).show();
+            loggerD(msg = "『应用配置』运行中")
+            YukiHookLogger.saveToFile("/sdcard/Android/data/" + packageName + "/appconfig.log")
+          }
+        }
+      }
+
+      findClass("android.content.ContextWrapper").hook {
+        injectMember {
+          method {
+            name = "attachBaseContext"
+            paramCount = 1
+          }
+          beforeHook {
+            loggerD(msg = "ContextWrapper hook")
+            YukiHookLogger.saveToFile("/sdcard/Android/data/" + packageName + "/appconfig.log")
+            var context: Context = args().first().cast<Context>();
+            var res: Resources = context.getResources();
+            var config: Configuration = Configuration(res.getConfiguration());
+            var runningMetrics: DisplayMetrics = res.getDisplayMetrics();
+            var newMetrics: DisplayMetrics;
+            if (runningMetrics != null) {
+              newMetrics = DisplayMetrics();
+              newMetrics.setTo(runningMetrics);
+            } else {
+              newMetrics = res.getDisplayMetrics();
+            }
+            var dpi: Int = 320
+            if (dpi > 0) {
+              newMetrics.density = dpi / 160f;
+              newMetrics.densityDpi = dpi;
+              config?.current()?.field { name = "densityDpi" }?.set(dpi)
+            }
+            context = context.createConfigurationContext(config);
+            args().first().set(context)
+          }
+        }
+      }
+    }
+
   }
 }
