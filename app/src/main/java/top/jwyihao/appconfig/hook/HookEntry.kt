@@ -156,23 +156,23 @@ class HookEntry : IYukiHookXposedInit {
             loggerD(msg = "ContextWrapper hook")
             YukiHookLogger.saveToFile("/sdcard/Android/data/" + packageName + "/appconfig.log")
             var context: Context? = args().first().cast<Context?>();
-            var res: Resources = context.getResources();
-            var config: Configuration = Configuration(res.getConfiguration());
-            var runningMetrics: DisplayMetrics = res.getDisplayMetrics();
-            var newMetrics: DisplayMetrics;
+            var res: Resources? = context?.getResources();
+            var config: Configuration? = Configuration(res?.getConfiguration());
+            var runningMetrics: DisplayMetrics? = res?.getDisplayMetrics();
+            var newMetrics: DisplayMetrics?;
             if (runningMetrics != null) {
               newMetrics = DisplayMetrics();
               newMetrics.setTo(runningMetrics);
             } else {
-              newMetrics = res.getDisplayMetrics();
+              newMetrics = res?.getDisplayMetrics();
             }
             var dpi: Int = 320
             if (dpi > 0) {
-              newMetrics.density = dpi / 160f;
-              newMetrics.densityDpi = dpi;
+              newMetrics?.density = dpi / 160f;
+              newMetrics?.densityDpi = dpi;
               config?.current()?.field { name = "densityDpi" }?.set(dpi)
             }
-            context = context.createConfigurationContext(config);
+            context = context?.createConfigurationContext(config);
             args().first().set(context)
           }
         }
