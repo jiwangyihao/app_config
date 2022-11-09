@@ -54,7 +54,7 @@ class HookEntry : IYukiHookXposedInit {
     val pm: PackageManager = appContext?.getPackageManager()
     val intent: Intent = Intent(Intent.ACTION_MAIN, null);
     intent.setPackage(packageName);
-    val infos: (Mutable)List<ResolveInfo!> = pm?.queryIntentActivities(intent, PackageManager.MATCH_ALL)
+    val infos: List<ResolveInfo!> = pm?.queryIntentActivities(intent, PackageManager.MATCH_ALL)
     for (info in infos) {
       loggerD(msg = "[activtiyName]"+info.activityInfo.name);
     }
