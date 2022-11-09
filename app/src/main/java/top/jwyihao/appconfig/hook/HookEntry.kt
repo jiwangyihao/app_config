@@ -145,6 +145,7 @@ class HookEntry : IYukiHookXposedInit {
             Toast.makeText(appContext, "『应用配置』运行中", Toast.LENGTH_SHORT).show();
             loggerD(msg = "『应用配置』运行中")
             YukiHookLogger.saveToFile("/sdcard/Android/data/" + packageName + "/appconfig.log")
+            YukiHookLogger.clear()
           }
         }
       }
