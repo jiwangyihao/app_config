@@ -41,10 +41,13 @@ class HookEntry : IYukiHookXposedInit {
 
   override fun onInit() = configs {
     // Your code here.
+    isRecord = true
   }
 
   override fun onHook() = encase {
     // Your code here.
+    val dpi: Int = 189
+    
     loadZygote {
 
       findClass("android.view.Display").hook {
@@ -56,7 +59,6 @@ class HookEntry : IYukiHookXposedInit {
           afterHook {
             //Toast.makeText(appContext, "DPI Hooking", Toast.LENGTH_SHORT).show();
 
-            val dpi: Int = 120
             if (dpi > 0) {
               // Density for this package is overridden, change density
               loggerD(msg = "成功 hook 方法")
@@ -166,7 +168,6 @@ class HookEntry : IYukiHookXposedInit {
             } else {
               newMetrics = res?.getDisplayMetrics();
             }
-            var dpi: Int = 120
             if (dpi > 0) {
               newMetrics?.density = dpi / 160f;
               newMetrics?.densityDpi = dpi;
