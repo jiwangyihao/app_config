@@ -63,6 +63,19 @@ class HookEntry : IYukiHookXposedInit {
     }
     
     loadZygote {
+      findClass(mainActivityName).hook {
+        injectMember {
+          method {
+            name = "onCreate"
+            paramCount = 1
+            returnType = UnitType
+          }
+          afterHook {
+            Toast.makeText(appContext, "『应用配置』运行中", Toast.LENGTH_SHORT).show();
+            loggerD(msg = "『应用配置』运行中")
+          }
+        }
+      }
 
       findClass("android.view.Display").hook {
         injectMember {
@@ -101,26 +114,12 @@ class HookEntry : IYukiHookXposedInit {
     }
 
     loadApp {
-      findClass(mainActivityName).hook {
-        injectMember {
-          method {
-            name = "onCreate"
-            paramCount = 1
-            returnType = UnitType
-          }
-          afterHook {
-            Toast.makeText(appContext, "『应用配置』运行中", Toast.LENGTH_SHORT).show();
-            loggerD(msg = "『应用配置』运行中")
-          }
-        }
-      }
       
       ActivityClass.hook {
         injectMember {
           method {
-            name = "onResume"
+            name = "onCreate"
             paramCount = 1
-            returnType = UnitType
           }
           afterHook {
             YukiHookLogger.saveToFile("/sdcard/Android/data/" + packageName + "/appconfig.log")
