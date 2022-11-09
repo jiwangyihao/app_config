@@ -51,10 +51,10 @@ class HookEntry : IYukiHookXposedInit {
   override fun onHook() = encase {
     // Your code here.
     val dpi: Int = 189
-    val pm: PackageManager = appContext.getPackageManager()
+    val pm: PackageManager = appContext?.getPackageManager()
     val intent: Intent = Intent(Intent.ACTION_MAIN, null);
     intent.setPackage(packageName);
-    val infos: ResolveInfo = pm.queryIntentActivities(intent, PackageManager.MATCH_ALL)
+    val infos: (Mutable)List<ResolveInfo!> = pm?.queryIntentActivities(intent, PackageManager.MATCH_ALL)
     for (info in infos) {
       loggerD(msg = "[activtiyName]"+info.activityInfo.name);
     }
