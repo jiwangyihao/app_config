@@ -51,6 +51,16 @@ class HookEntry : IYukiHookXposedInit {
   override fun onHook() = encase {
     // Your code here.
     val dpi: Int = 189
+    var mainActivityName: String
+    loggerD(msg = "搜寻入口activity中"+packageName)
+    val pm: PackageManager? = systemContext?.getPackageManager()
+    val intent: Intent = Intent(Intent.ACTION_MAIN, null);
+    intent.setPackage(packageName);
+    val infos: List<ResolveInfo>? = pm?.queryIntentActivities(intent, PackageManager.MATCH_ALL)
+    infos?.forEach {
+      loggerD(msg = "[activtiyName]"+it.activityInfo.name);
+      mainActivityName = it.activityInfo.name
+    }
     
     loadZygote {
 
@@ -66,7 +76,7 @@ class HookEntry : IYukiHookXposedInit {
             if (dpi > 0) {
               // Density for this package is overridden, change density
               loggerD(msg = "成功 hook 方法")
-              field { name = "mDisplayInfo" }.get(instance)?.current()?.field { name = "logicalDensityDpi" }?.set(dpi)
+              field { name = "mDisplayInfo" }.get(instance).current()?.field { name = "logicalDensityDpi" }?.set(dpi)
               //DisplayClass.field { name = "mDisplayInfo" }?.get(instance)?.any()
               //  ?.current()?.field { name = "logicalDensityDpi" }?.set(dpi)
             }
@@ -91,15 +101,7 @@ class HookEntry : IYukiHookXposedInit {
     }
 
     loadApp {
-      loggerD(msg = "搜寻入口activity中"+packageName)
-      val pm: PackageManager? = systemContext?.getPackageManager()
-      val intent: Intent = Intent(Intent.ACTION_MAIN, null);
-      intent.setPackage(packageName);
-      val infos: List<ResolveInfo>? = pm?.queryIntentActivities(intent, PackageManager.MATCH_ALL)
-      infos?.forEach {
-        loggerD(msg = "[activtiyName]"+it.activityInfo.name);
-      }
-      ActivityClass.hook {
+      findClass(mainActivityName).hook {
         injectMember {
           method {
             name = "onCreate"
@@ -109,6 +111,18 @@ class HookEntry : IYukiHookXposedInit {
           afterHook {
             Toast.makeText(appContext, "『应用配置』运行中", Toast.LENGTH_SHORT).show();
             loggerD(msg = "『应用配置』运行中")
+          }
+        }
+      }
+      
+      ActivityClass.hook {
+        injectMember {
+          method {
+            name = "onResume"
+            paramCount = 1
+            returnType = UnitType
+          }
+          afterHook {
             YukiHookLogger.saveToFile("/sdcard/Android/data/" + packageName + "/appconfig.log")
             YukiHookLogger.clear()
           }
@@ -137,7 +151,7 @@ class HookEntry : IYukiHookXposedInit {
             if (dpi > 0) {
               newMetrics?.density = dpi / 160f;
               newMetrics?.densityDpi = dpi;
-              config.current()?.field { name = "densityDpi" }?.set(dpi)
+              config.current().field { name = "densityDpi" }?.set(dpi)
             }
             context = context?.createConfigurationContext(config);
             args().first().set(context)
