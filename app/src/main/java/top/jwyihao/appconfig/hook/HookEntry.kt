@@ -51,31 +51,8 @@ class HookEntry : IYukiHookXposedInit {
   override fun onHook() = encase {
     // Your code here.
     val dpi: Int = 189
-    var mainActivityName: String = ""
-    loggerD(msg = "搜寻入口activity中"+packageName)
-    val pm: PackageManager? = systemContext?.getPackageManager()
-    val intent: Intent = Intent(Intent.ACTION_MAIN, null);
-    intent.setPackage(packageName);
-    val infos: List<ResolveInfo>? = pm?.queryIntentActivities(intent, PackageManager.MATCH_ALL)
-    infos?.forEach {
-      loggerD(msg = "[activtiyName]"+it.activityInfo.name);
-      mainActivityName = it.activityInfo.name
-    }
-    
+
     loadZygote {
-      findClass(mainActivityName).hook {
-        injectMember {
-          method {
-            name = "onCreate"
-            paramCount = 1
-            returnType = UnitType
-          }
-          afterHook {
-            Toast.makeText(appContext, "『应用配置』运行中", Toast.LENGTH_SHORT).show();
-            loggerD(msg = "『应用配置』运行中")
-          }
-        }
-      }
 
       findClass("android.view.Display").hook {
         injectMember {
@@ -114,7 +91,31 @@ class HookEntry : IYukiHookXposedInit {
     }
 
     loadApp {
-      
+      var mainActivityName: String = ""
+      loggerD(msg = "搜寻入口activity中"+packageName)
+      val pm: PackageManager? = systemContext?.getPackageManager()
+      val intent: Intent = Intent(Intent.ACTION_MAIN, null);
+      intent.setPackage(packageName);
+      val infos: List<ResolveInfo>? = pm?.queryIntentActivities(intent, PackageManager.MATCH_ALL)
+      infos?.forEach {
+        loggerD(msg = "[activtiyName]"+it.activityInfo.name);
+        mainActivityName = it.activityInfo.name
+      }
+
+      findClass(mainActivityName).hook {
+        injectMember {
+          method {
+            name = "onCreate"
+            paramCount = 1
+            returnType = UnitType
+          }
+          afterHook {
+            Toast.makeText(appContext, "『应用配置』运行中", Toast.LENGTH_SHORT).show();
+            loggerD(msg = "『应用配置』运行中")
+          }
+        }
+      }
+            
       ActivityClass.hook {
         injectMember {
           method {
