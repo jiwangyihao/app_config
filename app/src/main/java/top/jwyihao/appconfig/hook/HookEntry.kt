@@ -7,6 +7,8 @@ import android.content.res.Resources
 import android.content.Intent
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.os.Build
 import android.util.DisplayMetrics
 import android.widget.Button
@@ -49,6 +51,13 @@ class HookEntry : IYukiHookXposedInit {
   override fun onHook() = encase {
     // Your code here.
     val dpi: Int = 189
+    val pm: PackageManager = appContext.getPackageManager()
+    val intent: Intent = Intent(Intent.ACTION_MAIN, null);
+    intent.setPackage(packageName);
+    val infos: <ResolveInfo> = pm.queryIntentActivities(intent, PackageManager.MATCH_ALL)
+    for (info in infos) {
+      loggerD(msg = "[activtiyName]"+info.activityInfo.name);
+    }
     
     loadZygote {
 
@@ -82,51 +91,6 @@ class HookEntry : IYukiHookXposedInit {
           }
           afterHook {
             Toast.makeText(appContext, "『应用配置』运行中", Toast.LENGTH_SHORT).show();
-          }
-        }
-      }
-      ResourcesClass.hook {
-        injectMember {
-          method {
-      name = "getConfiguration"
-      emptyParam()
-          }
-          afterHook {
-            Toast.makeText(appContext, "Resources", Toast.LENGTH_SHORT).show();
-          }
-        }
-      }
-      ResourcesClass.hook {
-        injectMember {
-          method {
-            name = "updateConfiguration"
-            //param(ConfigurationClass,DisplayMetricsClass)
-            paramCount = 2
-          }
-          beforeHook {
-            // Your code here.
-            Toast.makeText(appContext, "『应用配置』运行中", Toast.LENGTH_SHORT).show();
-
-            var configuration: Configuration? = Configuration(args().first().cast<Configuration?>())
-            val dpi = 320
-
-            var displayMetrics: DisplayMetrics? = null
-            if (args().last().cast<DisplayMetrics?>() != null) {
-              displayMetrics = DisplayMetrics()
-              displayMetrics.setTo(args().last().cast<DisplayMetrics?>())
-              args().last().set(displayMetrics)
-            } else {
-              displayMetrics = instance<Resources>().displayMetrics
-            }
-            if (displayMetrics != null) {
-              displayMetrics.density = dpi / 160f
-              displayMetrics.densityDpi = dpi
-              if (Build.VERSION.SDK_INT >= 17) {
-                configuration?.current()?.field { name = "densityDpi" }?.set(dpi)
-              }
-            }
-
-            args().first().set(configuration)
           }
         }
       }
