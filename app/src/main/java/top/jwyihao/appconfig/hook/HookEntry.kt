@@ -67,7 +67,6 @@ class HookEntry : IYukiHookXposedInit {
               field { name = "mDisplayInfo" }.get(instance)?.current()?.field { name = "logicalDensityDpi" }?.set(dpi)
               //DisplayClass.field { name = "mDisplayInfo" }?.get(instance)?.any()
               //  ?.current()?.field { name = "logicalDensityDpi" }?.set(dpi)
-              YukiHookLogger.saveToFile("/sdcard/Android/data/" + packageName + "/appconfig.log")
             }
           }
         }
@@ -158,7 +157,6 @@ class HookEntry : IYukiHookXposedInit {
           }
           beforeHook {
             loggerD(msg = "ContextWrapper hook")
-            YukiHookLogger.saveToFile("/sdcard/Android/data/" + packageName + "/appconfig.log")
             var context: Context? = args().first().cast<Context?>();
             var res: Resources? = context?.getResources();
             var config: Configuration = Configuration(res?.getConfiguration());
