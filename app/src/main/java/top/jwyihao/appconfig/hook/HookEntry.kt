@@ -51,13 +51,6 @@ class HookEntry : IYukiHookXposedInit {
   override fun onHook() = encase {
     // Your code here.
     val dpi: Int = 189
-    val pm: PackageManager? = appContext?.getPackageManager()
-    val intent: Intent = Intent(Intent.ACTION_MAIN, null);
-    intent.setPackage(packageName);
-    val infos: List<ResolveInfo>? = pm?.queryIntentActivities(intent, PackageManager.MATCH_ALL)
-    infos?.forEach {
-      loggerD(msg = "[activtiyName]"+it.activityInfo.name);
-    }
     
     loadZygote {
 
@@ -98,6 +91,14 @@ class HookEntry : IYukiHookXposedInit {
     }
 
     loadApp {
+      loggerD(msg = "搜寻入口activity中")
+      val pm: PackageManager? = appContext?.getPackageManager()
+      val intent: Intent = Intent(Intent.ACTION_MAIN, null);
+      intent.setPackage(packageName);
+      val infos: List<ResolveInfo>? = pm?.queryIntentActivities(intent, PackageManager.MATCH_ALL)
+      infos?.forEach {
+        loggerD(msg = "[activtiyName]"+it.activityInfo.name);
+      }
       ActivityClass.hook {
         injectMember {
           method {
