@@ -92,7 +92,7 @@ class HookEntry : IYukiHookXposedInit {
 
     loadApp {
       loggerD(msg = "搜寻入口activity中"+packageName)
-      val pm: PackageManager? = appContext?.getPackageManager()
+      val pm: PackageManager? = systemContext?.getPackageManager()
       val intent: Intent = Intent(Intent.ACTION_MAIN, null);
       intent.setPackage(packageName);
       val infos: List<ResolveInfo>? = pm?.queryIntentActivities(intent, PackageManager.MATCH_ALL)
