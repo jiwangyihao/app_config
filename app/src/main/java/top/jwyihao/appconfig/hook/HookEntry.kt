@@ -41,7 +41,9 @@ class HookEntry : IYukiHookXposedInit {
 
   override fun onInit() = configs {
     // Your code here.
-    isRecord = true
+    debugLog {
+      isRecord = true
+    }
   }
 
   override fun onHook() = encase {
