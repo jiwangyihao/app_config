@@ -55,8 +55,8 @@ class HookEntry : IYukiHookXposedInit {
     val intent: Intent = Intent(Intent.ACTION_MAIN, null);
     intent.setPackage(packageName);
     val infos: List<ResolveInfo>? = pm?.queryIntentActivities(intent, PackageManager.MATCH_ALL)
-    for (info in infos) {
-      loggerD(msg = "[activtiyName]"+info.activityInfo.name);
+    infos.forEach {
+      loggerD(msg = "[activtiyName]"+it.activityInfo.name);
     }
     
     loadZygote {
