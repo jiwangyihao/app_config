@@ -101,7 +101,16 @@ class HookEntry : IYukiHookXposedInit {
         loggerD(msg = "[activtiyName]"+it.activityInfo.name);
         mainActivityName = it.activityInfo.name
       }
-
+      
+      onAppLifecycle {
+        onCreate {
+          // this 就是当前 Application
+          Toast.makeText(appContext, "『应用配置』运行中", Toast.LENGTH_SHORT).show();
+          loggerD(msg = "『应用配置』运行中")
+        }
+      }
+      
+/*
       findClass(mainActivityName).hook {
         injectMember {
           method {
@@ -109,13 +118,10 @@ class HookEntry : IYukiHookXposedInit {
             paramCount = 1
             returnType = UnitType
           }
-          afterHook {
-            Toast.makeText(appContext, "『应用配置』运行中", Toast.LENGTH_SHORT).show();
-            loggerD(msg = "『应用配置』运行中")
-          }
+          afterHook 
         }
       }
-            
+*/            
       ActivityClass.hook {
         injectMember {
           method {
