@@ -104,7 +104,7 @@ class HookEntry : IYukiHookXposedInit {
       
       try {
         val pmList = mutableListOf<String>()
-        val process = runtime.exec("pm list packages")
+        val process = Runtime.getRuntime().exec("pm list packages")
         process.inputStream.source().buffer().use { bs ->
           while (true) {
             bs.readUtf8Line()?.trim()?.let { line ->
