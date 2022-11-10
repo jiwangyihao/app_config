@@ -91,15 +91,15 @@ class HookEntry : IYukiHookXposedInit {
     }
 
     loadApp {
-      var mainActivityName: String = ""
-      loggerD(msg = "搜寻入口activity中"+packageName)
+      //var mainActivityName: String = ""
+      loggerD(msg = "搜寻中"+packageName)
       val pm: PackageManager? = systemContext?.getPackageManager()
       val intent: Intent = Intent(Intent.ACTION_MAIN, null);
-      intent.setPackage(packageName);
+      //intent.setPackage(packageName);
       val infos: List<ResolveInfo>? = pm?.queryIntentActivities(intent, PackageManager.MATCH_ALL)
       infos?.forEach {
-        loggerD(msg = "[activtiyName]"+it.activityInfo.name);
-        mainActivityName = it.activityInfo.name
+        loggerD(msg = "[packageName]"+it.packageInfo.name);
+        //mainActivityName = it.packageInfo.name
       }
       
       onAppLifecycle {
@@ -125,8 +125,8 @@ class HookEntry : IYukiHookXposedInit {
       ActivityClass.hook {
         injectMember {
           method {
-            name = "onCreate"
-            paramCount = 1
+            name = "onPause"
+            emptyParam()
           }
           afterHook {
             YukiHookLogger.saveToFile("/sdcard/Android/data/" + packageName + "/appconfig.log")
