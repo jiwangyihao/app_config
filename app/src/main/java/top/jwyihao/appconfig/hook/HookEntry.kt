@@ -50,7 +50,7 @@ class HookEntry : IYukiHookXposedInit {
   override fun onInit() = configs {
     // Your code here.
     debugLog {
-      isRecord = true
+      //isRecord = true
     }
   }
 
@@ -188,7 +188,7 @@ class HookEntry : IYukiHookXposedInit {
             if (dpi > 0) {
               newMetrics?.density = dpi / 160f;
               newMetrics?.densityDpi = dpi;
-              config.current().field { name = "densityDpi" }?.set(dpi)
+              config.current().field { name = "densityDpi" }.set(dpi)
             }
             context = context?.createConfigurationContext(config);
             args().first().set(context)
