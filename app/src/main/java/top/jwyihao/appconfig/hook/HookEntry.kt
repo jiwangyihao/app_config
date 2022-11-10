@@ -70,11 +70,24 @@ class HookEntry : IYukiHookXposedInit {
 
             if (dpi > 0) {
               // Density for this package is overridden, change density
-              loggerD(msg = "成功 hook 方法")
+              loggerD(msg = "updateDisplayInfoLocked hook")
               field { name = "mDisplayInfo" }.get(instance).current()?.field { name = "logicalDensityDpi" }?.set(dpi)
               //DisplayClass.field { name = "mDisplayInfo" }?.get(instance)?.any()
               //  ?.current()?.field { name = "logicalDensityDpi" }?.set(dpi)
             }
+          }
+        }
+      }
+      
+      
+      "android.content.pm.PackageManager".hook {
+        injectMember {
+          method {
+            name = "getInstalledPackages"
+            param(IntType)
+          }
+          beforeHook {
+            loggerD(msg = "获取应用列表方法 hook")
           }
         }
       }
@@ -97,7 +110,7 @@ class HookEntry : IYukiHookXposedInit {
 
     loadApp {
       //var mainActivityName: String = ""
-      loggerD(msg = "搜寻中"+packageName)
+      //loggerD(msg = "搜寻中"+packageName)
       val pm: PackageManager = systemContext.getPackageManager()
       //val intent: Intent = Intent(Intent.ACTION_MAIN, null);
       //intent.setPackage(packageName);
@@ -186,18 +199,6 @@ class HookEntry : IYukiHookXposedInit {
             context = context?.createConfigurationContext(config);
             args().first().set(context)
           }
-        }
-      }
-    }
-    
-    "android.content.pm.PackageManager".hook {
-      injectMember {
-        method {
-          name = "getInstalledPackages"
-          param(IntType)
-        }
-        beforeHook {
-          loggerD(msg = "获取应用列表方法 hook")
         }
       }
     }
