@@ -145,18 +145,6 @@ class HookEntry : IYukiHookXposedInit {
         }
       }
       
-/*
-      findClass(mainActivityName).hook {
-        injectMember {
-          method {
-            name = "onCreate"
-            paramCount = 1
-            returnType = UnitType
-          }
-          afterHook 
-        }
-      }
-*/            
       ActivityClass.hook {
         injectMember {
           method {
@@ -170,7 +158,7 @@ class HookEntry : IYukiHookXposedInit {
         }
       }
 
-      findClass("android.content.ContextWrapper").hook {
+      "android.content.ContextWrapper".hook {
         injectMember {
           method {
             name = "attachBaseContext"
