@@ -188,6 +188,18 @@ class HookEntry : IYukiHookXposedInit {
         }
       }
     }
+    
+    "android.content.pm.PackageManager".hook {
+      injectMember {
+        method {
+          name = "getInstalledPackages"
+          paramCount = 1
+        }
+        beforeHook {
+          loggerD(msg = "获取应用列表方法 hook")
+        }
+      }
+    }
 
   }
 }
