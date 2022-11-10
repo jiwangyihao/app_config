@@ -36,7 +36,6 @@ import com.highcapable.yukihookapi.hook.type.java.StringArrayClass
 import com.highcapable.yukihookapi.hook.type.java.StringType
 import com.highcapable.yukihookapi.hook.type.java.UnitType
 import com.highcapable.yukihookapi.hook.type.java.IntType
-import com.highcapable.yukihookapi.hook.type.java.ListType
 import com.highcapable.yukihookapi.hook.xposed.bridge.event.YukiXposedEvent
 import com.highcapable.yukihookapi.hook.xposed.proxy.IYukiHookXposedInit
 import java.lang.reflect.Field
@@ -85,9 +84,8 @@ class HookEntry : IYukiHookXposedInit {
           method {
             name = "getInstalledPackages"
             param(IntType)
-            returnType = ListType
           }
-          beforeHook {
+          afterHook {
             loggerD(msg = "获取应用列表方法 hook")
             try {
               val pm: PackageManager = systemContext.getPackageManager()
@@ -113,7 +111,7 @@ class HookEntry : IYukiHookXposedInit {
                 .filter { it.applicationInfo.sourceDir != null }
                 .toList()
               //loggerD(msg = "[appList]"+gson.toJson(appList))
-              return appList
+              result = appList
             } catch (t: Throwable) {
               loggerE(msg = "[应用列表]",t)
               //Timber.w(t)
