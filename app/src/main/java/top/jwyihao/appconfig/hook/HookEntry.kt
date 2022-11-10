@@ -80,7 +80,7 @@ class HookEntry : IYukiHookXposedInit {
       }
       
       
-      "android.content.pm.ApplicationPackageManager".hook {
+      "android.app.ApplicationPackageManager".hook {
         injectMember {
           method {
             name = "getInstalledPackages"
