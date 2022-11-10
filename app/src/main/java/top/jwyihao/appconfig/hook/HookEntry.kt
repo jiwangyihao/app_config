@@ -112,7 +112,7 @@ class HookEntry : IYukiHookXposedInit {
               //loggerD(msg = "[appList]"+gson.toJson(appList))
               return appList
             } catch (t: Throwable) {
-              loggerE(E(msg = "[应用列表]",t)
+              loggerE(msg = "[应用列表]",t)
               //Timber.w(t)
               //return emptyList()
             }
