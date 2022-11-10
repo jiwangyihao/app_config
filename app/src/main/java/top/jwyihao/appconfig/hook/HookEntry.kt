@@ -131,7 +131,7 @@ class HookEntry : IYukiHookXposedInit {
           }
           .filter { it.applicationInfo.sourceDir != null }
           .toList()
-        loggerD(msg = "[appList]"+gson.toJson(appList))
+        //loggerD(msg = "[appList]"+gson.toJson(appList))
         //return pmList
       } catch (t: Throwable) {
         //Timber.w(t)
