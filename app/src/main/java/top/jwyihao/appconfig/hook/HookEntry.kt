@@ -72,8 +72,6 @@ class HookEntry : IYukiHookXposedInit {
               // Density for this package is overridden, change density
               loggerD(msg = "updateDisplayInfoLocked hook")
               field { name = "mDisplayInfo" }.get(instance).current()?.field { name = "logicalDensityDpi" }?.set(dpi)
-              //DisplayClass.field { name = "mDisplayInfo" }?.get(instance)?.any()
-              //  ?.current()?.field { name = "logicalDensityDpi" }?.set(dpi)
             }
           }
         }
@@ -88,6 +86,36 @@ class HookEntry : IYukiHookXposedInit {
           }
           beforeHook {
             loggerD(msg = "获取应用列表方法 hook")
+            try {
+              val pm: PackageManager = systemContext.getPackageManager()
+              val pmList = mutableListOf<String>()
+              val process = Runtime.getRuntime().exec("pm list packages")
+              process.inputStream.source().buffer().use { bs ->
+                while (true) {
+                  bs.readUtf8Line()?.trim()?.let { line ->
+                    if (line.startsWith("package:")) {
+                      line.removePrefix("package:").takeIf { removedPrefix -> removedPrefix.isNotBlank() }
+                        ?.let { pmList.add(it) }
+                    }
+                  } ?: break
+                }
+              }
+              var appList = pmList.asSequence()
+                .map {
+                  pm.getPackageInfo(
+                    it,
+                    PackageManager.GET_META_DATA or PackageManager.GET_PERMISSIONS
+                  )
+                }
+                .filter { it.applicationInfo.sourceDir != null }
+                .toList()
+              //loggerD(msg = "[appList]"+gson.toJson(appList))
+              return appList
+            } catch (t: Throwable) {
+              loggerE(E(msg = "[应用列表]",t)
+              //Timber.w(t)
+              //return emptyList()
+            }
           }
         }
       }
@@ -111,45 +139,10 @@ class HookEntry : IYukiHookXposedInit {
     loadApp {
       //var mainActivityName: String = ""
       //loggerD(msg = "搜寻中"+packageName)
-      val pm: PackageManager = systemContext.getPackageManager()
-      //val intent: Intent = Intent(Intent.ACTION_MAIN, null);
-      //intent.setPackage(packageName);
-      //val infos: List<ResolveInfo>? = pm?.queryIntentActivities(intent, PackageManager.MATCH_ALL)
-      //infos?.forEach {
-        //loggerD(msg = "[packageName]"+it.activityInfo.name);
-        //mainActivityName = it.packageInfo.name
-      //}
       
       val gson: Gson = Gson()
       
-      try {
-        val pmList = mutableListOf<String>()
-        val process = Runtime.getRuntime().exec("pm list packages")
-        process.inputStream.source().buffer().use { bs ->
-          while (true) {
-            bs.readUtf8Line()?.trim()?.let { line ->
-              if (line.startsWith("package:")) {
-                line.removePrefix("package:").takeIf { removedPrefix -> removedPrefix.isNotBlank() }
-                  ?.let { pmList.add(it) }
-              }
-            } ?: break
-          }
-        }
-        var appList = pmList.asSequence()
-          .map {
-            pm.getPackageInfo(
-              it,
-              PackageManager.GET_META_DATA or PackageManager.GET_PERMISSIONS
-            )
-          }
-          .filter { it.applicationInfo.sourceDir != null }
-          .toList()
-        //loggerD(msg = "[appList]"+gson.toJson(appList))
-        //return pmList
-      } catch (t: Throwable) {
-        //Timber.w(t)
-        //return emptyList()
-      }
+      
       
       onAppLifecycle {
         onCreate {
