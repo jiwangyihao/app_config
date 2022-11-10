@@ -38,6 +38,7 @@ import com.highcapable.yukihookapi.hook.xposed.proxy.IYukiHookXposedInit
 import java.lang.reflect.Field
 import okio.buffer
 import okio.source
+import com.google.code.gson.Gson
 
 
 @InjectYukiHookWithXposed
@@ -95,14 +96,16 @@ class HookEntry : IYukiHookXposedInit {
     loadApp {
       //var mainActivityName: String = ""
       loggerD(msg = "搜寻中"+packageName)
-      val pm: PackageManager? = systemContext?.getPackageManager()
-      val intent: Intent = Intent(Intent.ACTION_MAIN, null);
+      //val pm: PackageManager? = systemContext?.getPackageManager()
+      //val intent: Intent = Intent(Intent.ACTION_MAIN, null);
       //intent.setPackage(packageName);
-      val infos: List<ResolveInfo>? = pm?.queryIntentActivities(intent, PackageManager.MATCH_ALL)
-      infos?.forEach {
+      //val infos: List<ResolveInfo>? = pm?.queryIntentActivities(intent, PackageManager.MATCH_ALL)
+      //infos?.forEach {
         //loggerD(msg = "[packageName]"+it.activityInfo.name);
         //mainActivityName = it.packageInfo.name
-      }
+      //}
+      
+      val gson: Gson = Gson()
       
       try {
         val pmList = mutableListOf<String>()
@@ -110,14 +113,14 @@ class HookEntry : IYukiHookXposedInit {
         process.inputStream.source().buffer().use { bs ->
           while (true) {
             bs.readUtf8Line()?.trim()?.let { line ->
-              //if (line.startsWith("package:")) {
-              //  line.removePrefix("package:").takeIf { removedPrefix -> removedPrefix.isNotBlank() }
-              //    ?.let { pmList.add(it) }
-              //}
-              loggerD(msg = "[Line]"+line)
+              if (line.startsWith("package:")) {
+                line.removePrefix("package:").takeIf { removedPrefix -> removedPrefix.isNotBlank() }
+                  ?.let { pmList.add(it) }
+              }
             } ?: break
           }
         }
+        loggerD(msg = "[pmList]"+gson.toJson(pmList))
         //return pmList
       } catch (t: Throwable) {
         //Timber.w(t)
