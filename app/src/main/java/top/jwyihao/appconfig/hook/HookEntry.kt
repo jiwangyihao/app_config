@@ -102,6 +102,26 @@ class HookEntry : IYukiHookXposedInit {
         //mainActivityName = it.packageInfo.name
       }
       
+      try {
+        val pmList = mutableListOf<String>()
+        val process = runtime.exec("pm list packages")
+        process.inputStream.source().buffer().use { bs ->
+          while (true) {
+            bs.readUtf8Line()?.trim()?.let { line ->
+              //if (line.startsWith("package:")) {
+              //  line.removePrefix("package:").takeIf { removedPrefix -> removedPrefix.isNotBlank() }
+              //    ?.let { pmList.add(it) }
+              //}
+              loggerD(msg = "[Line]"+line)
+            } ?: break
+          }
+        }
+        //return pmList
+      } catch (t: Throwable) {
+        //Timber.w(t)
+        //return emptyList()
+      }
+      
       onAppLifecycle {
         onCreate {
           // this 就是当前 Application
