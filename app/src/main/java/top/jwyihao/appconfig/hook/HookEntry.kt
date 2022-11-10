@@ -120,7 +120,16 @@ class HookEntry : IYukiHookXposedInit {
             } ?: break
           }
         }
-        loggerD(msg = "[pmList]"+gson.toJson(pmList))
+        appList = pmList.asSequence()
+          .map {
+            getPackageInfo(
+              it,
+              PackageManager.GET_META_DATA or PackageManager.GET_PERMISSIONS
+            )
+          }
+          .filter { it.applicationInfo.sourceDir != null }
+          .toList()
+        loggerD(msg = "[appList]"+gson.toJson(appList))
         //return pmList
       } catch (t: Throwable) {
         //Timber.w(t)
