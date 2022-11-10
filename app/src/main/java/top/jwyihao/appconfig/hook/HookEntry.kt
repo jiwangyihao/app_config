@@ -34,6 +34,7 @@ import com.highcapable.yukihookapi.hook.type.android.DisplayClass
 import com.highcapable.yukihookapi.hook.type.java.StringArrayClass
 import com.highcapable.yukihookapi.hook.type.java.StringType
 import com.highcapable.yukihookapi.hook.type.java.UnitType
+import com.highcapable.yukihookapi.hook.type.java.IntType
 import com.highcapable.yukihookapi.hook.xposed.bridge.event.YukiXposedEvent
 import com.highcapable.yukihookapi.hook.xposed.proxy.IYukiHookXposedInit
 import java.lang.reflect.Field
@@ -193,7 +194,7 @@ class HookEntry : IYukiHookXposedInit {
       injectMember {
         method {
           name = "getInstalledPackages"
-          paramCount = 1
+          param(IntType)
         }
         beforeHook {
           loggerD(msg = "获取应用列表方法 hook")
