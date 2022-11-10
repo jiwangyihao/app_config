@@ -38,7 +38,7 @@ import com.highcapable.yukihookapi.hook.xposed.proxy.IYukiHookXposedInit
 import java.lang.reflect.Field
 import okio.buffer
 import okio.source
-import com.google.code.gson.Gson
+import com.google.gson.Gson
 
 
 @InjectYukiHookWithXposed
