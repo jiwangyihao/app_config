@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.content.pm.applicationInfo
 import android.os.Build
 import android.util.DisplayMetrics
 import android.widget.Button
@@ -96,7 +97,7 @@ class HookEntry : IYukiHookXposedInit {
     loadApp {
       //var mainActivityName: String = ""
       loggerD(msg = "搜寻中"+packageName)
-      //val pm: PackageManager? = systemContext?.getPackageManager()
+      val pm: PackageManager = systemContext.getPackageManager()
       //val intent: Intent = Intent(Intent.ACTION_MAIN, null);
       //intent.setPackage(packageName);
       //val infos: List<ResolveInfo>? = pm?.queryIntentActivities(intent, PackageManager.MATCH_ALL)
@@ -120,9 +121,9 @@ class HookEntry : IYukiHookXposedInit {
             } ?: break
           }
         }
-        appList = pmList.asSequence()
+        var appList = pmList.asSequence()
           .map {
-            getPackageInfo(
+            pm.getPackageInfo(
               it,
               PackageManager.GET_META_DATA or PackageManager.GET_PERMISSIONS
             )
