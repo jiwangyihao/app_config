@@ -36,6 +36,8 @@ import com.highcapable.yukihookapi.hook.type.java.UnitType
 import com.highcapable.yukihookapi.hook.xposed.bridge.event.YukiXposedEvent
 import com.highcapable.yukihookapi.hook.xposed.proxy.IYukiHookXposedInit
 import java.lang.reflect.Field
+import okio.buffer
+import okio.source
 
 
 @InjectYukiHookWithXposed
