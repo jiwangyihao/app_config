@@ -9,7 +9,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
-import android.content.pm.applicationInfo
+import android.content.pm.ApplicationInfo
 import android.os.Build
 import android.util.DisplayMetrics
 import android.widget.Button
