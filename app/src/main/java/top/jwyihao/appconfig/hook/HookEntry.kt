@@ -86,7 +86,7 @@ class HookEntry : IYukiHookXposedInit {
             param(IntType)
           }
           afterHook {
-            loggerD(msg = "获取应用列表方法 hook")
+            loggerD(msg = "getInstalledPackages hook")
             try {
               val pm: PackageManager = systemContext.getPackageManager()
               val pmList = mutableListOf<String>()
@@ -109,6 +109,46 @@ class HookEntry : IYukiHookXposedInit {
                   )
                 }
                 .filter { it.applicationInfo.sourceDir != null }
+                .toList()
+              //loggerD(msg = "[appList]"+gson.toJson(appList))
+              result = appList
+            } catch (t: Throwable) {
+              loggerE(msg = "[应用列表]",e = t)
+              //Timber.w(t)
+              //return emptyList()
+            }
+          }
+        }
+        
+        injectMember {
+          method {
+            name = "getInstalledApplications"
+            param(IntType)
+          }
+          afterHook {
+            loggerD(msg = "getInstalledApplications hook")
+            try {
+              val pm: PackageManager = systemContext.getPackageManager()
+              val pmList = mutableListOf<String>()
+              val process = Runtime.getRuntime().exec("pm list packages")
+              process.inputStream.source().buffer().use { bs ->
+                while (true) {
+                  bs.readUtf8Line()?.trim()?.let { line ->
+                    if (line.startsWith("package:")) {
+                      line.removePrefix("package:").takeIf { removedPrefix -> removedPrefix.isNotBlank() }
+                        ?.let { pmList.add(it) }
+                    }
+                  } ?: break
+                }
+              }
+              var appList = pmList.asSequence()
+                .map {
+                  pm.getPackageInfo(
+                    it,
+                    PackageManager.GET_META_DATA or PackageManager.GET_PERMISSIONS
+                  ).applicationInfo
+                }
+                .filter { it.sourceDir != null }
                 .toList()
               //loggerD(msg = "[appList]"+gson.toJson(appList))
               result = appList
