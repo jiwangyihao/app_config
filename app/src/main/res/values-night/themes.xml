@@ -1,6 +1,7 @@
 <resources>
   <!-- Base application theme. -->
   <style name="Theme.AppDefault" parent="Theme.Material3.DayNight">
+    <item name="android:colorBackground">#FF000000</item>
     <!-- Primary brand color. -->
     <item name="colorPrimary">@color/colorPrimaryAccent</item>
     <item name="colorPrimaryVariant">@color/colorPrimaryAccent</item>
