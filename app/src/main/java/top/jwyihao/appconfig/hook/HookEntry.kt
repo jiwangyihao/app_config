@@ -56,7 +56,7 @@ class HookEntry : IYukiHookXposedInit {
 
   override fun onHook() = encase {
     // Your code here.
-    val dpi: Int = 189
+    val dpi: Int = 400
 
     loadZygote {
 
