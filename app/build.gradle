@@ -1,16 +1,16 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'com.google.devtools.ksp' version '1.7.20-1.0.6'
+    id 'com.google.devtools.ksp' version '1.8.22-1.0.11'
 }
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "top.jwyihao.appconfig"
         minSdk 27
-        targetSdk 33
+        targetSdk 34
         versionCode rootProject.ext.appVersionCode
         versionName rootProject.ext.appVersionName
 
@@ -26,44 +26,36 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '17'
         freeCompilerArgs = [
                 '-Xno-param-assertions',
                 '-Xno-call-assertions',
                 '-Xno-receiver-assertions'
         ]
     }
+    kotlin {
+        jvmToolchain(17)
+    }
     buildFeatures {
         viewBinding true
     }
-    lint {
+    lintOptions {
         checkReleaseBuilds false
     }
     namespace 'top.jwyihao.appconfig'
 }
 
 dependencies {
-    implementation 'com.android.support:cardview-v7:28.0.0'
     compileOnly 'de.robv.android.xposed:api:82'
-    implementation 'com.highcapable.yukihookapi:api:1.1.4'
-    ksp 'com.highcapable.yukihookapi:ksp-xposed:1.1.4'
-    implementation 'com.github.duanhong169:drawabletoolbox:1.0.7'
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.7.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.squareup.okio:okio:3.2.0'
-    implementation 'com.google.code.gson:gson:2.10'
+    implementation 'com.highcapable.yukihookapi:api:1.1.9'
+    ksp 'com.highcapable.yukihookapi:ksp-xposed:1.1.9'
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
-}
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-tasks.withType(JavaCompile) {
-    options.fork = true
-    options.forkOptions.jvmArgs += ["-Duser.language=en"]
+    implementation "com.squareup.okio:okio:3.3.0"
 }
