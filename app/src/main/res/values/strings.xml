@@ -1,17 +1,4 @@
 <resources>
-  <string name="app_name">APP Config</string>
-  <string name="xposed_desc">一个类似『应用变量』的可在宿主应用内完成配置的适用于『LSPatch 便携模式』的模块</string>
-  <string name="about_module">This module is made by YukiHookAPI. \nLearn more https://github.com/fankes/YukiHookAPI
-  </string>
-  <string name="module_version">Module version: %1$s</string>
-  <string name="module_not_activated">Module not activated</string>
-  <string name="module_is_activated">Module is activated</string>
-  <string name="display_settings">Display settings</string>
-  <string name="hide_app_icon_on_launcher">Hide app icons on launcher</string>
-  <string name="hide_app_icon_on_launcher_tip">After hiding the app icon, the interface may be closed and will no longer
-    be displayed on the launcher. You can find and open the module settings in EdXposed or LSPosed.
-  </string>
-  <string name="hide_app_icon_on_launcher_notice">Note: Be sure to turn off the \"Force apps to show launcher icons\"
-    feature in LSPosed
-  </string>
+    <string name="app_name">应用配置</string>
+    <string name="xposed_desc">一个类似『应用变量』的可在宿主应用内完成配置的适用于『LSPatch 便携模式』的模块</string>
 </resources>
