@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">应用配置</string>
-    <string name="xposed_desc">一个类似『应用变量』的可在宿主应用内完成配置的适用于『LSPatch 便携模式』的模块</string>
+    <string name="xposed_desc">一个类似「应用变量」的可在宿主应用内完成配置的适用于「LSPatch 便携模式」的模块</string>
 </resources>
