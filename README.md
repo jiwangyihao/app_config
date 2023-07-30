@@ -60,3 +60,12 @@
 <!-- 2023-7-10 创建 by 吉王义昊 -->
 <!-- 2023-7-11 修改 by 吉王义昊 -->
 ```
+
+## 鸣谢
+
+本应用主要基于（或者参考）了以下开源项目：
+https://github.com/fankes/YukiHookAPI
+https://github.com/square/okio
+https://github.com/BlueCat300/XposedAppSettings
+
+（详见依赖）
