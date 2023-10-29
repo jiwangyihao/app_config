@@ -1,30 +1,3 @@
-# 应用配置
-
-一个类似「应用变量」的可在宿主应用内完成配置的适用于「LSPatch 便携模式」的模块
-
-## 特色
-
-- 支持修改应用内 DPI（配置时使用「最小宽度」）
-- 支持在不允许获取「读取应用列表」权限的设备上模拟「读取应用列表」权限
-- 支持为应用内界面增加边距以实现圆屏适配
-- 可以按设备和应用生效的自定义配置
-  - 以规则集为单位
-  - 设备与应用包名双条件约束
-  - 可以自定义最小宽度大小
-  - 可以自定义模拟权限情况
-  - 可以自定义圆屏适配时界面容器的长宽比例
-  - 可以自定义圆屏适配时界面的缩放系数
-
-## 配置文件说明
-
-自定义配置不提供 GUI 配置界面，请自行使用「MT 管理器」等工具修改模块 apk 内的 [`assets/config.xml`](https://github.com/jiwangyihao/app_config/blob/main/app/src/main/assets/config.xml) 文件进行配置。
-
-**欢迎提交 Pull Request 来让我们的默认配置更好！**
-
-_即使你没有能力更改配置文件，也可以通过 Issue 来帮助我们！_
-
-示例文件如下（你也可以点击 [`assets/example.xml`](https://github.com/jiwangyihao/app_config/blob/main/app/src/main/assets/config.xml) 查看当前最新版本）：
-``` xml
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- 这是一份示例配置，对它的修改 **不会** 起效 -->
 
@@ -72,7 +45,7 @@ _即使你没有能力更改配置文件，也可以通过 Issue 来帮助我们
         <!-- 圆屏适配下界面容器的比例（浮点型，默认值是 1.0） -->
         <!-- 容器高度除以宽度所得的结果 -->
         <!-- 当该项设置被设置为 1.0 时，界面容器是一个标准正方形 -->
-        <item name="roundRatio">1.5</item>
+        <item name="roundRatio">1.0</item>
     </rule-set>
     <!-- 单独配置，当在机型代码是 round-device 的设备上运行时，该配置生效 -->
     <rule-set device="round-device">
@@ -99,13 +72,3 @@ _即使你没有能力更改配置文件，也可以通过 Issue 来帮助我们
 <!-- 也就是说，如果你把通用配置写在最后，所有的单独配置都无法生效 -->
 
 <!-- 警告：尽管编写模块时做了容错处理，但错误的配置仍然可能使模块部分甚至整体失效 -->
-```
-
-## 鸣谢
-
-本应用主要基于（或者参考）了以下开源项目：
-- https://github.com/fankes/YukiHookAPI
-- https://github.com/square/okio
-- https://github.com/BlueCat300/XposedAppSettings
-
-（详见依赖）
