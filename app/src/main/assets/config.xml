@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- 有关配置文件的具体说明请参见 example.xml -->
-<config author="吉王义昊">
+<config author="WHOIS_Kevin">
     <!-- 默认配置，作用于所有设备和应用 -->
     <rule-set>
         <item name="minWidth">320</item>
@@ -18,6 +18,21 @@
         <item name="minWidth">500</item>
         <item name="fakeAppList">false</item>
     </rule-set>
+    <rule-set device="OWW212">
+        <!-- 适用于OPPO Watch 3 -->
+        <item name="minWidth">372</item>
+        <item name="round">false</item>
+    </rule-set>
+    <rule-set device="OWW211">
+        <!-- 适用于OPPO Watch 3 Pro -->
+        <item name="minWidth">378</item>
+        <item name="round">false</item>
+    </rule-set>
+    <rule-set device="OWW221">
+        <!-- 适用于OPPO Watch 4 Pro -->
+        <item name="minWidth">378</item>
+        <item name="round">false</item>
+    </rule-set>
 </config>
 
 <!-- 考虑到一份配置文件大概不太可能只有一个作者 -->
@@ -31,3 +46,4 @@
 <!-- 2023-7-11 修改 by 吉王义昊 -->
 <!-- 2023-10-28 修改 by 吉王义昊 -->
 <!-- 2023-10-29 修改 by 吉王义昊 -->
+<!-- 2023-11-08 修改 by WHOIS_Kevin -->
