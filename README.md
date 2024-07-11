@@ -110,6 +110,10 @@ _即使你没有能力更改配置文件，也可以通过 Issue 来帮助我们
 
 （详见依赖）
 
+## Copyright
+
+© copyright Lordly Team
+
 ## ✨ Stargazers over time
 
 感谢大家的支持！
