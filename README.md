@@ -116,9 +116,9 @@ _即使你没有能力更改配置文件，也可以通过 Issue 来帮助我们
 
 由 [Lordly Tech](https://github.com/Lordly-Tech) 开发者 [@jiwangyihao](https://github.com/jiwangyihao) 开发
 
-Lordly Wear 可穿戴设备交流群：977408846
+Lordly Wear 可穿戴设备交流群：[977408846](https://qm.qq.com/q/Qb87dSyZqe)
 
-Lordly Tech 讨论群：691197557
+Lordly Tech 讨论群：[691197557](https://qm.qq.com/q/Ot5g1JjOwy)
 
 ## ✨ Stargazers over time
 
