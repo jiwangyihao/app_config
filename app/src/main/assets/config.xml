@@ -11,6 +11,8 @@
         <item name="roundSize">1.05</item>
         <!-- 圆屏适配的显示区域比例，1.2 与魅族手表的屏幕比例接近 -->
         <item name="roundRatio">1.2</item>
+        <!-- 圆屏适配下设置背景颜色为黑色 -->
+        <item name="backgroundColor">#000000</item>
     </rule-set>
     <!-- 绿联私有云 -->
     <rule-set package="com.ugreen.nas">
