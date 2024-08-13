@@ -83,7 +83,10 @@ class HookEntry : IYukiHookXposedInit {
                     //如果事件类型不是文档结束的话则不断处理事件
                     while (eventType != XmlPullParser.END_DOCUMENT) {
                         when (eventType) {
-                            XmlPullParser.START_DOCUMENT -> YLog.debug(msg = "开始解析配置文件", tag = YLog.Configs.tag)
+                            XmlPullParser.START_DOCUMENT -> YLog.debug(
+                                msg = "开始解析配置文件",
+                                tag = YLog.Configs.tag
+                            )
 
                             XmlPullParser.START_TAG -> {
                                 //获得解析器当前元素的名称
@@ -106,15 +109,25 @@ class HookEntry : IYukiHookXposedInit {
                                     when (parser.getAttributeValue(null, "name")) {
                                         "minWidth" -> config.minWidth = parser.nextText().toInt()
 
-                                        "fakeAppList" -> config.fakeAppList = parser.nextText().toBoolean()
+                                        "fakeAppList" -> config.fakeAppList =
+                                            parser.nextText().toBoolean()
 
                                         "round" -> config.round = parser.nextText().toBoolean()
 
-                                        "forceRound" -> config.forceRound = parser.nextText().toBoolean()
+                                        "forceRound" -> config.forceRound =
+                                            parser.nextText().toBoolean()
 
-                                        "roundSize" -> config.roundSize = parser.nextText().toDouble()
+                                        "roundSize" -> config.roundSize =
+                                            parser.nextText().toDouble()
 
-                                        "roundRatio" -> config.roundRatio = parser.nextText().toDouble()
+                                        "roundRatio" -> config.roundRatio =
+                                            parser.nextText().toDouble()
+
+                                        "horizontalOffset" -> config.horizontalOffset =
+                                            parser.nextText().toDouble()
+
+                                        "verticalOffset" -> config.verticalOffset =
+                                            parser.nextText().toDouble()
                                     }
                                 }
                             }
@@ -140,6 +153,8 @@ class HookEntry : IYukiHookXposedInit {
             YLog.debug(msg = "forceRound：${config.forceRound}", tag = YLog.Configs.tag)
             YLog.debug(msg = "roundSize：${config.roundSize}", tag = YLog.Configs.tag)
             YLog.debug(msg = "roundRatio：${config.roundRatio}", tag = YLog.Configs.tag)
+            YLog.debug(msg = "horizontalOffset：${config.horizontalOffset}", tag = YLog.Configs.tag)
+            YLog.debug(msg = "verticalOffset：${config.verticalOffset}", tag = YLog.Configs.tag)
         } catch (e: Exception) {
             YLog.error(msg = "获取配置文件失败", e = e, tag = YLog.Configs.tag)
         }
@@ -191,7 +206,8 @@ class HookEntry : IYukiHookXposedInit {
                             }
                             val appList = pmList.asSequence().map {
                                 pm.getPackageInfo(
-                                    it, PackageManager.GET_META_DATA or PackageManager.GET_PERMISSIONS
+                                    it,
+                                    PackageManager.GET_META_DATA or PackageManager.GET_PERMISSIONS
                                 )
                             }.filter { it.applicationInfo.sourceDir != null }.toList()
                             result = appList
@@ -210,12 +226,18 @@ class HookEntry : IYukiHookXposedInit {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                             if (mainProcessName == getProcessName()) {
                                 Toast.makeText(
-                                    appContext, "「应用配置」运行中\r\n该配置由「${config.author}」提供", Toast.LENGTH_SHORT
+                                    appContext,
+                                    "「应用配置」运行中\r\n该配置由「${config.author}」提供",
+                                    Toast.LENGTH_SHORT
                                 ).show()
                                 YLog.debug(
-                                    msg = "「应用配置」运行中，当前配置由「${config.author}」提供", tag = YLog.Configs.tag
+                                    msg = "「应用配置」运行中，当前配置由「${config.author}」提供",
+                                    tag = YLog.Configs.tag
                                 )
-                                YLog.debug(msg = "PID：「${getProcessName()}」", tag = YLog.Configs.tag)
+                                YLog.debug(
+                                    msg = "PID：「${getProcessName()}」",
+                                    tag = YLog.Configs.tag
+                                )
                             }
                         }
 
@@ -260,7 +282,8 @@ class HookEntry : IYukiHookXposedInit {
                             val containerDiagonal =
                                 sqrt(runningMetrics.widthPixels * runningMetrics.heightPixels * 1f) * config.roundSize
                             val containerWidth = containerDiagonal * cos(atan(config.roundRatio))
-                            minWidth = (minWidth / containerWidth * runningMetrics.widthPixels).toInt()
+                            minWidth =
+                                (minWidth / containerWidth * runningMetrics.widthPixels).toInt()
                         }
 
                         configure.current().field { name = "densityDpi" }
@@ -316,16 +339,58 @@ class HookEntry : IYukiHookXposedInit {
                                 sqrt(metrics.widthPixels * metrics.heightPixels * 1f) * config.roundSize
                             val containerWidth = containerDiagonal * cos(atan(config.roundRatio))
                             val containerHeight = containerDiagonal * sin(atan(config.roundRatio))
-                            val horizontalPadding = (metrics.widthPixels - containerWidth.toInt()) / 2
-                            val verticalPadding = (metrics.heightPixels - containerHeight.toInt()) / 2
+                            val horizontalPadding =
+                                (metrics.widthPixels - containerWidth.toInt()) / 2
+                            val verticalPadding =
+                                (metrics.heightPixels - containerHeight.toInt()) / 2
+                            val leftPadding = horizontalPadding * (1 + config.horizontalOffset)
+                            val topPadding = verticalPadding * (1 + config.verticalOffset)
+                            val rightPadding = horizontalPadding * (1 - config.horizontalOffset)
+                            val bottomPadding = verticalPadding * (1 - config.verticalOffset)
                             instance<Activity>().findViewById<View>(android.R.id.content)
-                                .setPadding(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding)
+                                .setPadding(
+                                    leftPadding.toInt(),
+                                    topPadding.toInt(),
+                                    rightPadding.toInt(),
+                                    bottomPadding.toInt()
+                                )
                             YLog.debug(msg = "Width：${metrics.widthPixels}", tag = YLog.Configs.tag)
-                            YLog.debug(msg = "Height：${metrics.heightPixels}", tag = YLog.Configs.tag)
-                            YLog.debug(msg = "containerWidth：$containerWidth", tag = YLog.Configs.tag)
-                            YLog.debug(msg = "containerHeight：$containerHeight", tag = YLog.Configs.tag)
-                            YLog.debug(msg = "horizontalPadding：$horizontalPadding", tag = YLog.Configs.tag)
-                            YLog.debug(msg = "verticalPadding：$verticalPadding", tag = YLog.Configs.tag)
+                            YLog.debug(
+                                msg = "Height：${metrics.heightPixels}",
+                                tag = YLog.Configs.tag
+                            )
+                            YLog.debug(
+                                msg = "containerWidth：$containerWidth",
+                                tag = YLog.Configs.tag
+                            )
+                            YLog.debug(
+                                msg = "containerHeight：$containerHeight",
+                                tag = YLog.Configs.tag
+                            )
+                            YLog.debug(
+                                msg = "horizontalPadding：$horizontalPadding",
+                                tag = YLog.Configs.tag
+                            )
+                            YLog.debug(
+                                msg = "verticalPadding：$verticalPadding",
+                                tag = YLog.Configs.tag
+                            )
+                            YLog.debug(
+                                msg = "leftPadding：$leftPadding",
+                                tag = YLog.Configs.tag
+                            )
+                            YLog.debug(
+                                msg = "topPadding：$topPadding",
+                                tag = YLog.Configs.tag
+                            )
+                            YLog.debug(
+                                msg = "rightPadding：$rightPadding",
+                                tag = YLog.Configs.tag
+                            )
+                            YLog.debug(
+                                msg = "bottomPadding：$bottomPadding",
+                                tag = YLog.Configs.tag
+                            )
                         }
                     }
                 }
@@ -346,8 +411,10 @@ class HookEntry : IYukiHookXposedInit {
                                 sqrt(metrics.widthPixels * metrics.heightPixels * 1f) * config.roundSize
                             val containerWidth = containerDiagonal * cos(atan(config.roundRatio))
                             val containerHeight = containerDiagonal * sin(atan(config.roundRatio))
-                            val horizontalPadding = (metrics.widthPixels - containerWidth.toInt()) / 2
-                            val verticalPadding = (metrics.heightPixels - containerHeight.toInt()) / 2
+                            val horizontalPadding =
+                                (metrics.widthPixels - containerWidth.toInt()) / 2
+                            val verticalPadding =
+                                (metrics.heightPixels - containerHeight.toInt()) / 2
 
                             //设置window背景，默认的背景会有Padding值，不能全屏。当然不一定要是透明，你可以设置其他背景，替换默认的背景即可。
                             //window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -361,14 +428,21 @@ class HookEntry : IYukiHookXposedInit {
 //                            attributes.width = containerWidth.toInt()
 //                            attributes.height = containerHeight.toInt()
                             instance<Dialog>().window?.attributes = attributes
-                            val rootView = instance<Dialog>().findViewById<View>(android.R.id.content)
+                            val rootView =
+                                instance<Dialog>().findViewById<View>(android.R.id.content)
                             val param: FrameLayout.LayoutParams =
-                                FrameLayout.LayoutParams(containerWidth.toInt(), (containerHeight * 0.8).toInt())
+                                FrameLayout.LayoutParams(
+                                    containerWidth.toInt(),
+                                    (containerHeight * 0.8).toInt()
+                                )
                             param.gravity = Gravity.CENTER
                             //param.setMargins(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding)
                             //rootView.setPadding(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding)
                             rootView.layoutParams = param
-                            YLog.debug(msg = "Dialog Hook ${rootView.layoutParams.height}", tag = YLog.Configs.tag)
+                            YLog.debug(
+                                msg = "Dialog Hook ${rootView.layoutParams.height}",
+                                tag = YLog.Configs.tag
+                            )
                         }
                     }
                 }
@@ -385,4 +459,6 @@ class Config {
     var forceRound = true
     var roundSize = 1.0
     var roundRatio = 1.0
+    var horizontalOffset = 0.0
+    var verticalOffset = 0.0
 }
