@@ -23,7 +23,7 @@
 
 _即使你没有能力更改配置文件，也可以通过 Issue 来帮助我们！_
 
-示例文件如下（你也可以点击 [`assets/example.xml`](https://github.com/jiwangyihao/app_config/blob/main/app/src/main/assets/config.xml) 查看当前最新版本）：
+示例文件如下（你也可以点击 [`assets/example.xml`](https://github.com/jiwangyihao/app_config/blob/main/app/src/main/assets/example.xml) 查看当前最新版本）：
 ``` xml
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- 这是一份示例配置，对它的修改 **不会** 起效 -->
@@ -72,7 +72,17 @@ _即使你没有能力更改配置文件，也可以通过 Issue 来帮助我们
         <!-- 圆屏适配下界面容器的比例（浮点型，默认值是 1.0） -->
         <!-- 容器高度除以宽度所得的结果 -->
         <!-- 当该项设置被设置为 1.0 时，界面容器是一个标准正方形 -->
-        <item name="roundRatio">1.5</item>
+        <item name="roundRatio">1.0</item>
+        <!-- 圆屏适配下界面容器的水平方向的偏移比例（浮点型，默认值是 0.0） -->
+        <!-- 当该项设置被设置为 0.0 时，界面容器在屏幕中央显示 -->
+        <!-- 当该项设置被设置为 1.0 时，界面容器在屏幕右侧贴边显示 -->
+        <!-- 当该项设置被设置为 -1.0 时，界面容器在屏幕左侧贴边显示 -->
+        <item name="horizontalOffset">0.0</item>
+        <!-- 圆屏适配下界面容器的垂直方向的偏移比例（浮点型，默认值是 0.0） -->
+        <!-- 当该项设置被设置为 0.0 时，界面容器在屏幕中央显示 -->
+        <!-- 当该项设置被设置为 1.0 时，界面容器在屏幕底部贴边显示 -->
+        <!-- 当该项设置被设置为 -1.0 时，界面容器在屏幕顶部贴边显示 -->
+        <item name="verticalOffset">0.0</item>
     </rule-set>
     <!-- 单独配置，当在机型代码是 round-device 的设备上运行时，该配置生效 -->
     <rule-set device="round-device">
