@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.graphics.Color
 import android.os.Build
 import android.os.Environment
 import android.view.Gravity
@@ -128,6 +129,12 @@ class HookEntry : IYukiHookXposedInit {
 
                                         "verticalOffset" -> config.verticalOffset =
                                             parser.nextText().toDouble()
+
+                                        "backgroundColor" -> config.backgroundColor =
+                                            parser.nextText()
+
+                                        "backgroundAlpha" -> config.backgroundAlpha =
+                                            parser.nextText().toInt()
                                     }
                                 }
                             }
@@ -335,6 +342,8 @@ class HookEntry : IYukiHookXposedInit {
                             (config.round and (abs((1f * metrics.heightPixels / metrics.widthPixels) - 1) < 0.1))
                             or config.forceRound
                         ) {
+                            val rootView = instance<Activity>().findViewById<View>(android.R.id.content)
+
                             val containerDiagonal =
                                 sqrt(metrics.widthPixels * metrics.heightPixels * 1f) * config.roundSize
                             val containerWidth = containerDiagonal * cos(atan(config.roundRatio))
@@ -347,13 +356,24 @@ class HookEntry : IYukiHookXposedInit {
                             val topPadding = verticalPadding * (1 + config.verticalOffset)
                             val rightPadding = horizontalPadding * (1 - config.horizontalOffset)
                             val bottomPadding = verticalPadding * (1 - config.verticalOffset)
-                            instance<Activity>().findViewById<View>(android.R.id.content)
+                            rootView
                                 .setPadding(
                                     leftPadding.toInt(),
                                     topPadding.toInt(),
                                     rightPadding.toInt(),
                                     bottomPadding.toInt()
                                 )
+
+                            if (config.backgroundColor != "undefined") {
+                                instance<Activity>().window.decorView.setBackgroundColor(Color.parseColor(config.backgroundColor))
+                                rootView.background.alpha = 0
+                            }
+
+                            if (config.backgroundAlpha != -1) {
+                                instance<Activity>().window.decorView.background.alpha = config.backgroundAlpha
+                                rootView.background.alpha = 0
+                            }
+
                             YLog.debug(msg = "Width：${metrics.widthPixels}", tag = YLog.Configs.tag)
                             YLog.debug(
                                 msg = "Height：${metrics.heightPixels}",
@@ -461,4 +481,6 @@ class Config {
     var roundRatio = 1.0
     var horizontalOffset = 0.0
     var verticalOffset = 0.0
+    var backgroundColor = "undefined"
+    var backgroundAlpha = -1
 }
